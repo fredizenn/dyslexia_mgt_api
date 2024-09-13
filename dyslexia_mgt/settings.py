@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -56,6 +57,13 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=7),  # Extend access token to 7 days
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=30),  # Extend refresh token to 30 days
+    'ROTATE_REFRESH_TOKENS': True,  # Optionally rotate refresh tokens
+    'BLACKLIST_AFTER_ROTATION': True,  # Optionally blacklist old refresh tokens
 }
 
 ROOT_URLCONF = 'dyslexia_mgt.urls'

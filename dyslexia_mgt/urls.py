@@ -20,7 +20,7 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
-from user.views import CustomTokenObtainPairView, ProfileDetailView, register_user
+from user.views import CustomTokenObtainPairView, ExerciseDetailView, ExerciseListCreateView, ProfileDetailView, ProgressDetailView, RetrieveProgressView, TextContentDetailView, TextContentListCreateView, UpdateProgressView, register_user
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -30,4 +30,11 @@ urlpatterns = [
     path('api/register/', register_user, name='register_user'),
     path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/text-content/', TextContentListCreateView.as_view(), name='text-content-list-create'),
+    path('api/text-content/<int:pk>/', TextContentDetailView.as_view(), name='text-content-detail'),
+    path('api/exercises/', ExerciseListCreateView.as_view(), name='exercise-list-create'),
+    path('api/exercises/<int:pk>/', ExerciseDetailView.as_view(), name='exercise-detail'),
+    path('api/progress/', RetrieveProgressView.as_view(), name='retrieve-progress'),
+    path('api/progress/<int:pk>/', ProgressDetailView.as_view(), name='progress-detail'),
+    path('api/progress/update/', UpdateProgressView.as_view(), name='update-progress'),
 ]

@@ -1,0 +1,47 @@
+[
+    {
+        "question": "Why did Benny want to fly?",
+        "answer": "He wanted to be like the other birds.",
+        "choices": [
+            {
+                "text": "He wanted to be like the other birds."
+            },
+            {
+                "text": "He wanted to see the clouds."
+            },
+            {
+                "text": "He wanted to above the earth."
+            }
+        ]
+    },
+    {
+        "question": "What was different about Benny?",
+        "answer": "His wings were crooked, making it hard for him to fly.",
+        "choices": [
+            {
+                "text": "His wings were crooked, making it hard for him to fly."
+            },
+            {
+                "text": "He was different."
+            },
+            {
+                "text": "He was kind."
+            }
+        ]
+    },
+    {
+        "question": "What lesson did Benny learn?",
+        "answer": "Being brave and persistent can help you achieve your dreams.",
+        "choices": [
+            {
+                "text": "Being brave and persistent can help you achieve your dreams."
+            },
+            {
+                "text": "You must be patient."
+            },
+            {
+                "text": "Never give up."
+            }
+        ]
+    }
+]
