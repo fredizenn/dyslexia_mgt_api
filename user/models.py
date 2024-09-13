@@ -47,9 +47,15 @@ class Exercise(models.Model):
         return self.title
     
 class Progress(models.Model):
+    STATUS_CHOICES = [
+        ('not_started', 'Not Started'),
+        ('in_progress', 'In Progress'),
+        ('completed', 'Completed')
+    ]
+    
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
-    status = models.CharField(max_length=50, default='in_progress')  # e.g., "in_progress", "completed"
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES)
     score = models.FloatField(default=0.0)
     time_spent = models.DurationField(null=True, blank=True)
     last_updated = models.DateTimeField(auto_now=True)

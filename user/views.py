@@ -10,7 +10,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import serializers
 from rest_framework_simplejwt.views import TokenObtainPairView
 from user.models import Exercise, Profile, Progress, TextContent
-from .serializers import CustomTokenObtainPairSerializer, ExerciseSerializer, ProfileSerializer, ProgressSerializer, TextContentSerializer
+from .serializers import CustomTokenObtainPairSerializer, ExerciseSerializer, ProfileSerializer, ProgressReportSerializer, ProgressSerializer, TextContentSerializer
 from django.shortcuts import get_object_or_404
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -135,3 +135,10 @@ class UpdateProgressView(generics.UpdateAPIView):
         serializer.save()
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class ProgressReportView(generics.ListAPIView):
+    serializer_class = ProgressReportSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return Progress.objects.filter(user=self.request.user)

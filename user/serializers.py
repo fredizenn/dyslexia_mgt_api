@@ -40,3 +40,10 @@ class ProgressSerializer(serializers.ModelSerializer):
     # def create(self, validated_data):
     #     user = self.context['request'].user
     #     return Progress.objects.create(user=user, **validated_data)
+    
+class ProgressReportSerializer(serializers.ModelSerializer):
+    exercise_name = serializers.CharField(source='exercise.title', read_only=True)
+    
+    class Meta:
+        model = Progress
+        fields = ['id', 'exercise_name', 'status', 'score', 'time_spent', 'last_updated']
