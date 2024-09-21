@@ -10,8 +10,11 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import serializers
 from rest_framework_simplejwt.views import TokenObtainPairView
 from user.models import Exercise, Profile, Progress, TextContent
+from user.utils import get_next_difficulty
 from .serializers import CustomTokenObtainPairSerializer, ExerciseSerializer, ProfileSerializer, ProgressReportSerializer, ProgressSerializer, TextContentSerializer
 from django.shortcuts import get_object_or_404
+from django.db.models import Avg
+from rest_framework.views import APIView
 
 class RegisterSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
@@ -142,3 +145,61 @@ class ProgressReportView(generics.ListAPIView):
 
     def get_queryset(self):
         return Progress.objects.filter(user=self.request.user)
+    
+
+class ProgressHistoryView(generics.ListAPIView):
+    serializer_class = ProgressSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Progress.objects.filter(user=user)
+
+        # Optional filters
+        start_date = self.request.query_params.get('start_date')
+        end_date = self.request.query_params.get('end_date')
+        exercise_id = self.request.query_params.get('exercise')
+
+        if start_date and end_date:
+            queryset = queryset.filter(last_updated__range=[start_date, end_date])
+        if exercise_id:
+            queryset = queryset.filter(exercise_id=exercise_id)
+
+        return queryset
+    
+class ProgressSummaryView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        progress_entries = Progress.objects.filter(user=user)
+
+        # Calculate summary data
+        total_exercises = progress_entries.count()
+        completed_exercises = progress_entries.filter(status="completed").count()
+        average_score = progress_entries.aggregate(Avg('score'))['score__avg']
+        average_time_spent = progress_entries.aggregate(Avg('time_spent'))['time_spent__avg']
+
+        # Build the response data
+        summary_data = {
+            "total_exercises": total_exercises,
+            "completed_exercises": completed_exercises,
+            "average_score": average_score,
+            "average_time_spent": average_time_spent,
+        }
+
+        return Response(summary_data, status=200)
+
+class NextExerciseView(generics.RetrieveAPIView):
+    serializer_class = ExerciseSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        difficulty_level = get_next_difficulty(user)
+        next_exercise = Exercise.objects.filter(difficulty_level=difficulty_level).order_by('?').first()  # Random exercise
+        
+        if next_exercise:
+            serializer = self.get_serializer(next_exercise)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({"detail": "No exercises available."}, status=status.HTTP_404_NOT_FOUND)
