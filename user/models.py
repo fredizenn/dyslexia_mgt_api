@@ -29,7 +29,10 @@ class Profile(models.Model):
 class TextContent(models.Model):
     title = models.CharField(max_length=100)
     body = models.TextField()
+    difficulty_level = models.IntegerField(default=1, choices=[(1, 'Easy'), (2, 'Medium'), (3, 'Hard')])
+    topic = models.CharField(max_length=255, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    length = models.IntegerField(default=0)
     updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):

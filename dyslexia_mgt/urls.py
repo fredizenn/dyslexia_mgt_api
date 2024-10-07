@@ -20,7 +20,7 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
-from user.views import CustomTokenObtainPairView, ExerciseDetailView, ExerciseListCreateView, NextExerciseView, ProfileDetailView, ProgressDetailView, ProgressHistoryView, ProgressReportView, ProgressSummaryView, RetrieveProgressView, TextContentDetailView, TextContentListCreateView, UpdateProgressView, register_user
+from user.views import CustomTokenObtainPairView, ExerciseDetailView, ExerciseListCreateView, NextExerciseView, ProfileDetailView, ProgressDetailView, ProgressHistoryView, ProgressReportView, ProgressSummaryView, RetrieveProgressView, SpeechToTextView, TextContentDetailView, TextContentListCreateView, UpdateProgressView, register_user
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -41,4 +41,6 @@ urlpatterns = [
     path('api/progress/history/', ProgressHistoryView.as_view(), name='progress-history'),
     path('api/progress/summary/', ProgressSummaryView.as_view(), name='progress-summary'),
     path('api/exercises/next/', NextExerciseView.as_view(), name='next-exercise'),
+    path('api/speech-to-text/', SpeechToTextView.as_view(), name='speech-to-text'),
+
 ]

@@ -15,6 +15,8 @@ from .serializers import CustomTokenObtainPairSerializer, ExerciseSerializer, Pr
 from django.shortcuts import get_object_or_404
 from django.db.models import Avg
 from rest_framework.views import APIView
+from rest_framework.parsers import MultiPartParser
+from google.cloud import speech
 
 class RegisterSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
@@ -49,21 +51,58 @@ def register_user(request):
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+
+        try:
+            serializer.is_valid(raise_exception=True)
+
+            token_data = serializer.validated_data
+
+            response_data = {
+                'data': {
+                    'token': token_data['access'],
+                    'refresh_token': token_data['refresh'],
+                },
+                'success': True,
+                'message': "Logged in successfully"
+            }
+
+            return Response(response_data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({
+                'data': None,
+                'success': False,
+                'message': "Authentication failed: " + str(e)
+            }, status=status.HTTP_400_BAD_REQUEST)
+
     
 
 class ProfileDetailView(generics.RetrieveUpdateAPIView):
-    # queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self):
         user = self.request.user
         try:
-            return user.profile
+            return user.profile  
         except Profile.DoesNotExist:
-            # Optionally, create a profile if it doesn't exist:
             profile = Profile.objects.create(user=user)
             return profile
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance) 
+        response_data = {
+            'data': {
+                'profile': serializer.data
+            },
+            'success': True,
+            'message': "Profile retrieved successfully"
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
         
         
 class TextContentListCreateView(generics.ListCreateAPIView):
@@ -174,13 +213,11 @@ class ProgressSummaryView(APIView):
         user = request.user
         progress_entries = Progress.objects.filter(user=user)
 
-        # Calculate summary data
         total_exercises = progress_entries.count()
         completed_exercises = progress_entries.filter(status="completed").count()
         average_score = progress_entries.aggregate(Avg('score'))['score__avg']
         average_time_spent = progress_entries.aggregate(Avg('time_spent'))['time_spent__avg']
 
-        # Build the response data
         summary_data = {
             "total_exercises": total_exercises,
             "completed_exercises": completed_exercises,
@@ -203,3 +240,31 @@ class NextExerciseView(generics.RetrieveAPIView):
             serializer = self.get_serializer(next_exercise)
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response({"detail": "No exercises available."}, status=status.HTTP_404_NOT_FOUND)
+    
+class SpeechToTextView(APIView):
+    parser_classes = [MultiPartParser]
+    permission_classes = [permissions.IsAuthenticated]
+    def post(self, request, *args, **kwargs):
+        
+        if 'audio' not in request.FILES:
+            return Response({"detail": "No audio file provided."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        audio_file = request.FILES['audio'].read()
+        
+        client = speech.SpeechClient()
+        
+        audio = speech.RecognitionAudio(content=audio_file)
+        config = speech.RecognitionConfig(
+            encoding = speech.RecognitionConfig.AudioEncoding.MP3 | speech.RecognitionConfig.AudioEncoding.LINEAR16 | speech.RecognitionConfig.AudioEncoding.OGG_OPUS | speech.RecognitionConfig.AudioEncoding.FLAC,
+            sample_rate_hertz = 16000,
+            language_code = 'en-GH',
+        )
+        
+        try:
+            response = client.recognize(config=config, audio=audio)
+            
+            transcriptions = [result.alternatives[0].transcript for result in response.results]
+            return Response({"transcriptions": transcriptions}, status=status.HTTP_200_OK)
+        
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
