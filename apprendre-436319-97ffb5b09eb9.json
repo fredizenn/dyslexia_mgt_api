@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "apprendre-436319",
+  "private_key_id": "97ffb5b09eb9f404b03a9e76ff5b643bdc4d0f97",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCx/zci69C0tW4X\ne9uiBbXVRdyFKjOawS7kM8mwv3sZkneCtAlkXd9eCnfIG8jTtwa9JdypSfZIt+7S\n/qNqasIFPLknUusO4TTVv9X9BQvL213XL3F9hAwUyyhPFUN2En0EsaOlsk6fX1Uv\naUfFpci6ZTERC7Ta7Cp9ZUPzKgoPEO2b7iVM3AjQ7WhDMTn106nXs2rZoPdVxKm2\no9/7XX0wV5F0tGkHk+4hwuo5hnoEYiGaooET0EugmHCw0qTe9oCyCnh/lojQLDCU\nS73rx65tOmtHvX3AsLU/wVuw0suNgCxy9ZsDNL59EXwMUJRkQcsgpxhMc9F871yd\n5AmHO9iFAgMBAAECggEACN3GINKvSDkbXUcZpyXyq0d6FxYFkQlbbRmZS9kV6C2w\nD04pg5rbdANAeTLNG6KrzsMyjSo2fuPOnSr69+OOe5VNQcSzGcAlEhqmrZ5ROpvY\nPk5KMG7h7S07ekj8XcbI/HFezfOmT/D/PMfZP+Kkr4g32/oBzb/i0/E148htzNc9\nMGR32JDpMZYdNlZnFAxPGTh+L+ofTn2jz0RYXkfLU/nsE3Gq1xhYekmAZmlhsGnB\n4KTSkvizowXOtpPFV4XH/oGpJEw+Lv1+WCGO5BNP03I1hOsHqJ4O7DBksCdeVdjl\nAj3uwLLWeGVOwlvg2VeutySqHBSoPmqpiIG4oUDr4QKBgQDnoNOLAmpWTbbVZPDv\nsXjGNpVyauvPuh9xc99+3IlKd2/Q4rOgxQf/BMc77L82LQtuVO5MpWt61eGRrkhe\n/GCo0afGwFf1Otl01JQFJvctZnaYPyGaruKrSyO7ZHlIRDE6hXIt5usClCAxVKs9\nW5nHAO5Ay4AZulm1EVdSj0FfMQKBgQDEucSs87EyVhkQifsDYTjiBPoZzqEj898R\n17Zo/eFJIQbNXPj1DlgNzdIGh0vdPts+08i7zJfRowncCf3AeINz3ofQc5QsNVLx\nQqV8zoXHMQe8/OGijt3gX7Y4Y46umJyNYiqx89EIi+pW8A7MNtfE2mijX/SsL/yp\niRRKhERBlQKBgQCa5fdyB9x6+J+jV0y0zpc43rnUeWJXWV27rkSw/uSlMvhI1cJQ\nalMtnNFr5qf8n+T8FLoD8b/NtoiRtt5Y/yfY3dP4Wxq3OXLA6YRPab500wfOSrG7\nUubsrGQp5kghJtFRFHrF7Z4N7GcW9ktJzh8pcRrjo/N3wSJKr10ZLgoGkQKBgQCo\nYIvqsCWA/No1IrQ6n1MNeM8LmaSoXgoWfnf9Axd4/RCSYzoenOlW30wdFF4lfrAu\n5RvRSXrEDnTY5aBPxZZVbSj3jIVNFVLpdm6oFSfBZsDFy/ffp8JWUfVn7CZqX+rW\nxCfg6duHIiIvyQYRWftx3LJk6zNC0UvDW7WHVhAJxQKBgDbqnb6ywWk3KlfXDonR\n2ykvwKTP92BV9I+Fu9PmnOn6tHVtP7IP4oYs673Fc3Iy7FPJqP8R2dAMqEe4rhNC\nfktjOy9SM/f3p6itm8yiDGBkilWMfWJ65DZIZ0lNojixaapUfQ6kR0lQRFi/TnkI\nmGm1HgS9BT/MttHwzuGblco6\n-----END PRIVATE KEY-----\n",
+  "client_email": "apprendre-speech-to-text@apprendre-436319.iam.gserviceaccount.com",
+  "client_id": "114356937784027834121",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/apprendre-speech-to-text%40apprendre-436319.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

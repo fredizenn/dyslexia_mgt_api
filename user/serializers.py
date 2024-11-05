@@ -19,7 +19,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ['user','reading_level', 'preferred_font_size', 'background_color', 'learning_style']
+        fields = ['user', 'reading_level', 'preferred_font_size', 'background_color', 'learning_style']
         
 class TextContentSerializer(serializers.ModelSerializer):
     class Meta:

@@ -116,10 +116,104 @@ class TextContentDetailView(generics.RetrieveUpdateDestroyAPIView):
 class ExerciseListCreateView(generics.ListCreateAPIView):
     queryset = Exercise.objects.all()
     serializer_class = ExerciseSerializer
+
+    def get(self, request, *args, **kwargs):
+        exercises = self.get_queryset()
+        serializer = self.get_serializer(exercises, many=True)
+
+        response_data = {
+            'data': serializer.data,
+            'success': True,
+            'message': 'Exercise list retrieved successfully'
+        }
+
+        return Response(response_data, status=status.HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+
+        try:
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
+
+            response_data = {
+                'data': serializer.data,
+                'success': True,
+                'message': 'Exercise created successfully'
+            }
+
+            return Response(response_data, status=status.HTTP_201_CREATED)
+
+        except Exception as e:
+            return Response({
+                'data': None,
+                'success': False,
+                'message': 'Exercise creation failed: ' + str(e)
+            }, status=status.HTTP_400_BAD_REQUEST)
     
 class ExerciseDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Exercise.objects.all()
     serializer_class = ExerciseSerializer
+
+    def get(self, request, *args, **kwargs):
+        try:
+            exercise = self.get_object()
+            serializer = self.get_serializer(exercise)
+            response_data = {
+                'data': serializer.data,
+                'success': True,
+                'message': 'Exercise retrieved successfully'
+            }
+            return Response(response_data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({
+                'data': None,
+                'success': False,
+                'message': 'Failed to retrieve exercise: ' + str(e)
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+    def patch(self, request, *args, **kwargs):
+        return self.partial_update(request, *args, **kwargs)
+
+    def update(self, request, *args, **kwargs):
+        try:
+            exercise = self.get_object()
+            serializer = self.get_serializer(exercise, data=request.data, partial=False)
+            serializer.is_valid(raise_exception=True)
+            self.perform_update(serializer)
+
+            response_data = {
+                'data': serializer.data,  # Updated exercise data
+                'success': True,
+                'message': 'Exercise updated successfully'
+            }
+            return Response(response_data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({
+                'data': None,
+                'success': False,
+                'message': 'Failed to update exercise: ' + str(e)
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, *args, **kwargs):
+        try:
+            exercise = self.get_object()
+            self.perform_destroy(exercise)
+            response_data = {
+                'data': None,
+                'success': True,
+                'message': 'Exercise deleted successfully'
+            }
+            return Response(response_data, status=status.HTTP_204_NO_CONTENT)
+        except Exception as e:
+            return Response({
+                'data': None,
+                'success': False,
+                'message': 'Failed to delete exercise: ' + str(e)
+            }, status=status.HTTP_400_BAD_REQUEST)
 
 
 class RetrieveProgressView(generics.ListAPIView):
@@ -256,7 +350,7 @@ class SpeechToTextView(APIView):
         audio = speech.RecognitionAudio(content=audio_file)
         config = speech.RecognitionConfig(
             encoding = speech.RecognitionConfig.AudioEncoding.MP3 | speech.RecognitionConfig.AudioEncoding.LINEAR16 | speech.RecognitionConfig.AudioEncoding.OGG_OPUS | speech.RecognitionConfig.AudioEncoding.FLAC,
-            sample_rate_hertz = 16000,
+            # sample_rate_hertz = 16000,
             language_code = 'en-GH',
         )
         

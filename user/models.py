@@ -42,6 +42,7 @@ class Exercise(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     exercise_content = models.JSONField()
+    exercise_type = models.CharField(max_length=100, default='matching', choices=[('matching', 'Matching'), ('comprehension', 'Comprehension'), ('scramble', 'Scramble'), ('blanks', 'Blanks')])
     difficulty_level = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
