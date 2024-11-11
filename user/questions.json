@@ -1,8 +1,23 @@
 [
     {
+        "question": "What was the bird's name?",
+        "answer": "Benny",
+        "options": [
+            {
+                "text": "Winnie"
+            },
+            {
+                "text": "Benny"
+            },
+            {
+                "text": "Koli"
+            }
+        ]
+    },
+    {
         "question": "Why did Benny want to fly?",
         "answer": "He wanted to be like the other birds.",
-        "choices": [
+        "options": [
             {
                 "text": "He wanted to be like the other birds."
             },
@@ -17,7 +32,22 @@
     {
         "question": "What was different about Benny?",
         "answer": "His wings were crooked, making it hard for him to fly.",
-        "choices": [
+        "options": [
+            {
+                "text": "His wings were crooked, making it hard for him to fly."
+            },
+            {
+                "text": "He was different."
+            },
+            {
+                "text": "He was kind."
+            }
+        ]
+    },
+    {
+        "question": "What was different about Benny?",
+        "answer": "His wings were crooked, making it hard for him to fly.",
+        "options": [
             {
                 "text": "His wings were crooked, making it hard for him to fly."
             },
@@ -32,7 +62,7 @@
     {
         "question": "What lesson did Benny learn?",
         "answer": "Being brave and persistent can help you achieve your dreams.",
-        "choices": [
+        "options": [
             {
                 "text": "Being brave and persistent can help you achieve your dreams."
             },

@@ -20,13 +20,14 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
-from user.views import CustomTokenObtainPairView, ExerciseDetailView, ExerciseListCreateView, NextExerciseView, ProfileDetailView, ProgressDetailView, ProgressHistoryView, ProgressReportView, ProgressSummaryView, RetrieveProgressView, SpeechToTextView, TextContentDetailView, TextContentListCreateView, UpdateProgressView, register_user
+from user.views import CurrentUserView, CustomTokenObtainPairView, ExerciseDetailView, ExerciseListCreateView, MatchAnswerView, NextExerciseView, ProfileDetailView, ProgressDetailView, ProgressHistoryView, ProgressReportView, ProgressSummaryView, RetrieveProgressView, SpeechToTextView, TextContentDetailView, TextContentListCreateView, UpdateProgressView, register_user
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('login/', LoginUser.as_view(), name='login'),
     path('api/profile/', ProfileDetailView.as_view(), name='profile_detail'),
+    path('api/current-user/', CurrentUserView.as_view(), name='current_user'),
     path('api/register/', register_user, name='register_user'),
     path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
@@ -42,5 +43,6 @@ urlpatterns = [
     path('api/progress/summary/', ProgressSummaryView.as_view(), name='progress-summary'),
     path('api/exercises/next/', NextExerciseView.as_view(), name='next-exercise'),
     path('api/speech-to-text/', SpeechToTextView.as_view(), name='speech-to-text'),
+    path('api/verify-answer/', MatchAnswerView.as_view(), name='verify-answer'),
 
 ]

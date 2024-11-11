@@ -6,7 +6,7 @@ from user.models import Exercise, Profile, Progress, TextContent
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email']
+        fields = ['id', 'username', 'email', 'first_name', 'last_name']
         
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -17,6 +17,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token
 
 class ProfileSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
     class Meta:
         model = Profile
         fields = ['user', 'reading_level', 'preferred_font_size', 'background_color', 'learning_style']

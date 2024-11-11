@@ -1,5 +1,7 @@
 # In a new file, e.g., users/views.py
 from datetime import timedelta
+
+from django.http import JsonResponse
 from rest_framework import status, generics, permissions
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -17,6 +19,7 @@ from django.db.models import Avg
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser
 from google.cloud import speech
+from fuzzywuzzy import fuzz
 
 class RegisterSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
@@ -59,7 +62,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             serializer.is_valid(raise_exception=True)
 
             token_data = serializer.validated_data
-
+            
             response_data = {
                 'data': {
                     'token': token_data['access'],
@@ -101,6 +104,29 @@ class ProfileDetailView(generics.RetrieveUpdateAPIView):
             },
             'success': True,
             'message': "Profile retrieved successfully"
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+
+class CurrentUserView(generics.RetrieveAPIView):
+    serializer_class = ProfileSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        user = self.request
+        try:
+            return user
+        except User.DoesNotExist:
+            return None
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        response_data = {
+            'data': {
+                'current_user': serializer.data
+            },
+            'success': True,
+            'message': "Current user retrieved successfully"
         }
         return Response(response_data, status=status.HTTP_200_OK)
         
@@ -362,3 +388,21 @@ class SpeechToTextView(APIView):
         
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+class MatchAnswerView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        actual_answer = request.data.get('actual_answer')
+        user_answer = request.data.get('user_answer')
+
+        if not actual_answer or not user_answer:
+            return JsonResponse({"error": "Both 'actual_answer' and 'user_answer' are required."}, status=400)
+        
+        match_score = fuzz.ratio(actual_answer, user_answer)
+        
+        if match_score >= 80:
+            return Response({"success": True, "message": "Matching completed with a score of " + str(match_score) + "%", "match_score": match_score, "match": True})
+        else:
+            return Response({"success": False, "message": "Matching completed with a score of " + str(match_score) + "%", "match_score": match_score, "match": False})
+        
