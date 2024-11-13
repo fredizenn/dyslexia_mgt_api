@@ -24,7 +24,11 @@ from fuzzywuzzy import fuzz
 class RegisterSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
         required=True,
-        validators=[UniqueValidator(queryset=User.objects.all())]
+        validators=[UniqueValidator(queryset=User.objects.all(), message="A user with this email already exists.")]
+    )
+    username = serializers.CharField(
+        required=True,
+        validators=[UniqueValidator(queryset=User.objects.all(), message="A user with this username already exists.")]
     )
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
 
@@ -33,6 +37,14 @@ class RegisterSerializer(serializers.ModelSerializer):
         fields = ('username', 'password', 'email', 'first_name', 'last_name')
 
     def create(self, validated_data):
+        # Check for existing users with the same email or username
+        if User.objects.filter(email=validated_data['email']).exists():
+            raise serializers.ValidationError({"email": "A user with this email already exists."})
+
+        if User.objects.filter(username=validated_data['username']).exists():
+            raise serializers.ValidationError({"username": "A user with this username already exists."})
+
+        # Create new user if validation passes
         user = User.objects.create(
             username=validated_data['username'],
             email=validated_data['email'],
@@ -42,6 +54,18 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
+
+    def to_representation(self, instance):
+        return {
+            "success": True,
+            "message": "User registered successfully.",
+            "user": {
+                "username": instance.username,
+                "email": instance.email,
+                "first_name": instance.first_name,
+                "last_name": instance.last_name
+            }
+        }
 
 @api_view(['POST'])
 def register_user(request):
