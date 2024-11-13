@@ -20,7 +20,7 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
-from user.views import CurrentUserView, CustomTokenObtainPairView, ExerciseDetailView, ExerciseListCreateView, MatchAnswerView, NextExerciseView, ProfileDetailView, ProgressDetailView, ProgressHistoryView, ProgressReportView, ProgressSummaryView, RetrieveProgressView, SpeechToTextView, TextContentDetailView, TextContentListCreateView, UpdateProgressView, register_user
+from user.views import CurrentUserView, CustomTokenObtainPairView, ExerciseDetailView, ExerciseListCreateView, MatchAnswerView, NextExerciseView, ProfileDetailView, ProgressDetailView, ProgressHistoryView, ProgressReportView, ProgressSummaryView, RetrieveProgressView, SpeechToTextView, SuggestedExerciseView, TextContentDetailView, TextContentListCreateView, UpdateProgressView, register_user
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -44,5 +44,6 @@ urlpatterns = [
     path('api/exercises/next/', NextExerciseView.as_view(), name='next-exercise'),
     path('api/speech-to-text/', SpeechToTextView.as_view(), name='speech-to-text'),
     path('api/verify-answer/', MatchAnswerView.as_view(), name='verify-answer'),
+    path('api/suggested-exercise/', SuggestedExerciseView.as_view(), name='suggested-exercise'),
 
 ]

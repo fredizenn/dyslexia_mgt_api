@@ -16,31 +16,16 @@
     },
     {
         "question": "Why did Benny want to fly?",
-        "answer": "He wanted to be like the other birds.",
+        "answer": "He wanted to be like the other birds",
         "options": [
             {
-                "text": "He wanted to be like the other birds."
+                "text": "He wanted to be like the other birds"
             },
             {
-                "text": "He wanted to see the clouds."
+                "text": "He wanted to see the clouds"
             },
             {
-                "text": "He wanted to above the earth."
-            }
-        ]
-    },
-    {
-        "question": "What was different about Benny?",
-        "answer": "His wings were crooked, making it hard for him to fly.",
-        "options": [
-            {
-                "text": "His wings were crooked, making it hard for him to fly."
-            },
-            {
-                "text": "He was different."
-            },
-            {
-                "text": "He was kind."
+                "text": "He wanted to above the earth"
             }
         ]
     },
@@ -64,13 +49,13 @@
         "answer": "Being brave and persistent can help you achieve your dreams.",
         "options": [
             {
-                "text": "Being brave and persistent can help you achieve your dreams."
+                "text": "Being brave and persistent can help you achieve your dreams"
             },
             {
-                "text": "You must be patient."
+                "text": "You must be patient"
             },
             {
-                "text": "Never give up."
+                "text": "Never give up"
             }
         ]
     }

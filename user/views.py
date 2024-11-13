@@ -12,7 +12,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import serializers
 from rest_framework_simplejwt.views import TokenObtainPairView
 from user.models import Exercise, Profile, Progress, TextContent
-from user.utils import get_next_difficulty
+from user.utils import get_next_difficulty, suggest_exercises
 from .serializers import CustomTokenObtainPairSerializer, ExerciseSerializer, ProfileSerializer, ProgressReportSerializer, ProgressSerializer, TextContentSerializer
 from django.shortcuts import get_object_or_404
 from django.db.models import Avg
@@ -405,4 +405,17 @@ class MatchAnswerView(APIView):
             return Response({"success": True, "message": "Matching completed with a score of " + str(match_score) + "%", "match_score": match_score, "match": True})
         else:
             return Response({"success": False, "message": "Matching completed with a score of " + str(match_score) + "%", "match_score": match_score, "match": False})
+
+class SuggestedExerciseView(generics.RetrieveAPIView):
+    serializer_class = ExerciseSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        next_exercises = suggest_exercises(user)
+        # next_exercise = Exercise.objects.filter(difficulty_level=difficulty_level).order_by('?').first()  # Random exercise
         
+        if next_exercises:
+            serializer = self.get_serializer(next_exercises)
+            return Response(next_exercises, status=status.HTTP_200_OK)
+        return Response({"detail": "No exercises available."}, status=status.HTTP_404_NOT_FOUND)        

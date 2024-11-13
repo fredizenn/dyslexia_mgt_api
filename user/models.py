@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import ArrayField
 
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=100)
@@ -44,6 +45,7 @@ class Exercise(models.Model):
     exercise_content = models.JSONField()
     exercise_type = models.CharField(max_length=100, default='matching', choices=[('matching', 'Matching'), ('comprehension', 'Comprehension'), ('scramble', 'Scramble'), ('blanks', 'Blanks')])
     difficulty_level = models.IntegerField()
+    learning_style=models.CharField(max_length=100, choices=[('visual', 'Visual'), ('auditory', 'Auditory'), ('kinesthetic', 'Kinesthetic')], default='visual')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -69,6 +71,10 @@ class Progress(models.Model):
     
     def __str__(self):
         return f"{self.user.username} - {self.exercise.title}"
+
+
+
+
 
 
 # Create your models here.
