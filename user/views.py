@@ -130,6 +130,29 @@ class ProfileDetailView(generics.RetrieveUpdateAPIView):
             'message': "Profile retrieved successfully"
         }
         return Response(response_data, status=status.HTTP_200_OK)
+    
+    def put(self, request, *args, **kwargs):
+
+        profile = self.get_object()
+        data = request.data.copy()
+        data.pop('reading_level', None)  # Exclude 'reading_level' from the request data
+        serializer = self.get_serializer(profile, data=data, partial=False)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Profile updated successfully", "data": serializer.data}, status=status.HTTP_200_OK)
+        return Response({"error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request, *args, **kwargs):
+    
+        profile = self.get_object()
+        data = request.data.copy()
+        data.pop('reading_level', None)  
+        serializer = self.get_serializer(profile, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Profile updated successfully", "data": serializer.data}, status=status.HTTP_200_OK)
+        return Response({"error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class CurrentUserView(generics.RetrieveAPIView):
     serializer_class = ProfileSerializer
