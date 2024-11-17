@@ -27,9 +27,9 @@ SECRET_KEY = 'django-insecure-fh*0$+edaxd_xl@dwbv8=7r15i3j0w=9s)ts9ac=k$^_jx35k*
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [ 'dyslexia-mgt-api-auhxg4bpcrekdyhc.uksouth-01.azurewebsites.net', 'localhost', '127.0.0.1' ]
 
 
 # Application definition
@@ -109,10 +109,10 @@ WSGI_APPLICATION = 'dyslexia_mgt.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dyslexia_management_db',
-        'USER': 'dyslexia_user',
-        'PASSWORD': 'admin',
-        'HOST': 'localhost',
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST'),
         'PORT': '5432',
     }
 }
